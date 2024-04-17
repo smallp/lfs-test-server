@@ -21,7 +21,7 @@ type Configuration struct {
 	Cert        string `config:""`
 	Key         string `config:""`
 	Scheme      string `config:"http"`
-	Public      string `config:"public"`
+	Public      string `config:"true"`
 	UseTus      string `config:"false"`
 	TusHost     string `config:"localhost:1080"`
 }

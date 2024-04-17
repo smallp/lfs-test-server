@@ -155,7 +155,7 @@ func (a *App) addUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/mgmt/users", 302)
+	http.Redirect(w, r, "/mgmt/users", http.StatusFound)
 }
 
 func (a *App) delUserHandler(w http.ResponseWriter, r *http.Request) {
@@ -170,7 +170,7 @@ func (a *App) delUserHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	http.Redirect(w, r, "/mgmt/users", 302)
+	http.Redirect(w, r, "/mgmt/users", http.StatusFound)
 }
 
 func render(w http.ResponseWriter, tmpl string, data pageData) error {

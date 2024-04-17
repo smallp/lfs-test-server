@@ -77,7 +77,7 @@ func (t *TusServer) Start() {
 				logger.Log(kv{"fn": "tuserr", "msg": scanner.Text()})
 			}
 		}()
-		time.Sleep(2)
+		time.Sleep(2000)
 		procWait.Done()
 		defer p.Wait()
 

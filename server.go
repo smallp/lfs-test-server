@@ -230,7 +230,7 @@ func (a *App) GetContentHandler(w http.ResponseWriter, r *http.Request) {
 	if rangeHdr := r.Header.Get("Range"); rangeHdr != "" {
 		regex := regexp.MustCompile(`bytes=(\d+)\-.*`)
 		match := regex.FindStringSubmatch(rangeHdr)
-		if match != nil && len(match) > 1 {
+		if len(match) > 1 {
 			statusCode = 206
 			fromByte, _ = strconv.ParseInt(match[1], 10, 64)
 			w.Header().Set("Content-Range", fmt.Sprintf("bytes %d-%d/%d", fromByte, meta.Size-1, int64(meta.Size)-fromByte))
@@ -310,7 +310,13 @@ func (a *App) BatchHandler(w http.ResponseWriter, r *http.Request) {
 	for _, object := range bv.Objects {
 		meta, err := a.metaStore.Get(object)
 		if err == nil && a.contentStore.Exists(meta) { // Object is found and exists
-			responseObjects = append(responseObjects, a.Represent(object, meta, true, false, false))
+			if bv.Operation == "delete" {
+				a.metaStore.Delete(object)
+				a.contentStore.Delete(meta)
+				responseObjects = append(responseObjects, a.Represent(object, meta, false, false, false))
+			} else {
+				responseObjects = append(responseObjects, a.Represent(object, meta, true, false, false))
+			}
 			continue
 		}
 
